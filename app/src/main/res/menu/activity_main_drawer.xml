@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/Home"
+            android:title="Home" />
+        <item
+            android:id="@+id/to_do"
+            android:title="To Do" />
+        <item
+            android:id="@+id/calendar"
+            android:title="Calendar" />
+
+    </group>
+
+
+</menu>

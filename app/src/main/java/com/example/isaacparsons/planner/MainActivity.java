@@ -18,10 +18,15 @@ import com.example.isaacparsons.planner.ToDo.todofragment;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    MainFragment mainFragment = new MainFragment();
+    todofragment todoFragment = new todofragment();
+    CalendarFragment calendarFragment = new CalendarFragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         FragmentManager manager = getSupportFragmentManager();
         Fragment fragment = manager.findFragmentById(R.id.content_main);
@@ -85,16 +90,13 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fm = getSupportFragmentManager();
 
         if (id == R.id.Home) {
-            MainFragment mainFragment = new MainFragment();
             fm.beginTransaction().replace(R.id.content_main, mainFragment).addToBackStack(null).commit();
 
         } else if (id == R.id.to_do) {
-            todofragment todoFragment = new todofragment();
             fm.beginTransaction().replace(R.id.content_main, todoFragment).addToBackStack(null).commit();
 
 
         } else if (id == R.id.calendar) {
-            CalendarFragment calendarFragment = new CalendarFragment();
             fm.beginTransaction().replace(R.id.content_main, calendarFragment).addToBackStack(null).commit();
         }
 

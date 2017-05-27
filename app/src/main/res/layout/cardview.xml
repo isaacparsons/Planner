@@ -11,13 +11,26 @@
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardCornerRadius="4dp">
+        card_view:cardBackgroundColor="#D3D3D3"
+        card_view:cardElevation="6dp"
+        card_view:cardUseCompatPadding="true">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/card_image"
+            android:layout_gravity="left"
+            android:adjustViewBounds="true"
+            android:maxWidth="30dp"
+            android:maxHeight="30dp"
+            android:scaleType="fitCenter"
+            />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:padding="5dp" />
+            android:padding="5dp"
+            android:layout_marginLeft="25dp"/>
 
         <CheckBox
             android:id="@+id/completedcheckbox"

@@ -1,52 +1,66 @@
-<LinearLayout
+<android.support.v4.widget.NestedScrollView
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="#E0E0E0">
 
-    <CalendarView android:id="@+id/calendarView"
-        android:layout_width="match_parent"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_height="wrap_content"
-        xmlns:android="http://schemas.android.com/apk/res/android" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:background="@drawable/rectangle_for_calendar"></View>
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Due Today: "
-            android:paddingLeft="15dp"/>
-
-        <TextView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/calendar_fragment_current_date"
-            android:textSize="20dp"
-            android:gravity="center_horizontal"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/calendar_fragment"></FrameLayout>
 
-    </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:background="@drawable/rectangle_for_calendar"></View>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Due Today: "
+                android:paddingLeft="20dp"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/calendar_fragment_current_date"
+                android:textSize="20dp"
+                android:gravity="center_horizontal"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/calendar_recyler"></android.support.v7.widget.RecyclerView>
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/calendar_recyler"></android.support.v7.widget.RecyclerView>
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Due in the Next Week: "
+            android:textSize="20dp"
+            android:paddingLeft="20dp"/>
 
-</LinearLayout>
+
+    </LinearLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

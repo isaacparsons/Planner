@@ -37,6 +37,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -70,16 +72,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         MainActivity.setMainActivity(this);
         getWeatherJson();
-        mainFragment = new MainFragment();
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_main, mainFragment).commit();
-
-        //Fragment fragment = manager.findFragmentById(R.id.content_main);
-
-        //if (fragment == null) {
-        //    fragment = new MainFragment();
-        //    manager.beginTransaction().add(R.id.content_main, fragment).commit();
-        //}
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -139,8 +131,12 @@ public class MainActivity extends AppCompatActivity
             fm.beginTransaction().replace(R.id.content_main, mainFragment).commit();
 
         } else if (id == R.id.to_do) {
+            try {
+                todoFragment.checkDailyList();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             fm.beginTransaction().replace(R.id.content_main, todoFragment).addToBackStack(null).commit();
-
 
         } else if (id == R.id.calendar) {
             fm.beginTransaction().replace(R.id.content_main, calendarFragment).addToBackStack(null).commit();
@@ -187,9 +183,12 @@ public class MainActivity extends AppCompatActivity
                             JSONArray jsonArray = response.getJSONArray("weather");
                             JSONObject jsonweatherTypeobject = jsonArray.getJSONObject(0);
                             JSONObject jsonObject = response.getJSONObject("main");
-
                             weather = new Weather(String.valueOf(jsonObject.getInt("temp")-273), jsonweatherTypeobject.getString("main"));
 
+                            if(mainFragment == null){
+                                mainFragment = new MainFragment();
+                                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, mainFragment).commit();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -204,9 +203,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
         );
-
         // add it to the RequestQueue
         requestQueue.add(getRequest);
     }
-
 }

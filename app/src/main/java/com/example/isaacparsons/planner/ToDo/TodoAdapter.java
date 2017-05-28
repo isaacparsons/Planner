@@ -65,7 +65,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> 
                     eventDetailsDialogue.setArguments(bundle);
 
                     eventDetailsDialogue.show(manager, " ");
-
                 }
             });
 

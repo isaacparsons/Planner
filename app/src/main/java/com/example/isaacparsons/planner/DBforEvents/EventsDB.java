@@ -126,4 +126,24 @@ public class EventsDB extends SQLiteOpenHelper {
         return event;
 
     }
+
+    public ArrayList<Event> getDateEvent(String date) {
+        ArrayList<Event> eventlist = new ArrayList<Event>();
+        String selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE event_date = '" + date + "'";
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Event event = new Event();
+                event.setName(cursor.getString(1));
+                event.setDate(cursor.getString(2));
+                event.setCategory(cursor.getString(3));
+                event.setDescription(cursor.getString(4));
+                event.setImagetype(cursor.getString(5));
+                eventlist.add(event);
+            } while (cursor.moveToNext());
+        }
+        return eventlist;
+    }
 }

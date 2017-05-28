@@ -6,15 +6,22 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.isaacparsons.planner.DBforEvents.EventsDB;
+import com.example.isaacparsons.planner.MainActivity;
 import com.example.isaacparsons.planner.R;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,8 +60,6 @@ public class todofragment extends Fragment {
         dailylist2 = eventsDB.getAllEvents("Due");
         dailylist3 = eventsDB.getAllEvents("Not Due");
 
-        //visibility for Textview if arraylist empty
-
         //Event recyclerview
         recyclerView = (RecyclerView)v.findViewById(R.id.recyclerviewdaily);
         Adapter = new TodoAdapter(dailylist, getContext());
@@ -70,8 +75,6 @@ public class todofragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerViewfocused.setLayoutManager(linearLayoutManager);
-
-
 
         //general recyclerview
         recyclerViewgeneral = (RecyclerView)v.findViewById(R.id.recyclerviewgeneral);
@@ -104,6 +107,38 @@ public class todofragment extends Fragment {
         }
         return null;
     }
+    public void checkDailyList() throws ParseException {
 
+        EventsDB eventsDB = new EventsDB(MainActivity.getMainActivity().getApplicationContext());
+        dailylist = eventsDB.getAllEvents("Daily");
+        dailylist2 = eventsDB.getAllEvents("Due");
+        dailylist3 = eventsDB.getAllEvents("Not Due");
 
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar cal = Calendar.getInstance();
+        String timeNow = dateFormat.format(cal.getTime());
+        String daily;
+        int i =0;
+        if(!(dailylist.isEmpty())){
+            daily = dailylist.get(0).getDate();
+        } else{
+            daily = null;
+        }
+        if(timeNow!= daily){
+            while (i<dailylist.size()){
+                Event event = dailylist.get(i);
+                MainActivity.getMainActivity().addtorecycler(event.getName(), event.getDate(), "Due", event.getDescription(), event.getImagetype());
+                i++;
+            }
+            i=0;
+            while (i<dailylist2.size()){
+                Event event1 = dailylist2.get(i);
+                MainActivity.getMainActivity().removefromrecycler(event1.getName(), event1.getCategory());
+                i++;
+            }
+        }
+        else{
+            return;
+        }
+    }
 }

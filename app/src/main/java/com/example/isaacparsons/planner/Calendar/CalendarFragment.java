@@ -69,8 +69,6 @@ public class CalendarFragment extends Fragment {
         currentdateTextview.setText(days[day - 1] + ", " + months[month] + " " + dayofmonth + " " + year);
 
 
-
-
         //get current days items from DB
         ArrayList<Event> arrayList;
         String currentdayofmonth;
@@ -79,14 +77,12 @@ public class CalendarFragment extends Fragment {
         if(String.valueOf(dayofmonth).length()==1){
             currentdayofmonth = "0"+ String.valueOf(dayofmonth);
         }else{
-            currentdayofmonth = String.valueOf(dayofmonth);
-        }
+            currentdayofmonth = String.valueOf(dayofmonth);}
 
         if(String.valueOf(month+1).length()==1){
             currentmonth = "0"+ String.valueOf(month+1);
         }else{
-            currentmonth = String.valueOf(month+1);
-        }
+            currentmonth = String.valueOf(month+1);}
 
         String todayParsedDate = String.valueOf(currentdayofmonth) + "/" + String.valueOf(currentmonth) + "/" + String.valueOf(year);
         EventsDB eventsDB = new EventsDB(getContext());
@@ -145,6 +141,20 @@ public class CalendarFragment extends Fragment {
             }
         };
         caldroidFragment.setCaldroidListener(caldroidListener);
+        ArrayList<Event> backgrounddates = eventsDB.getAllEvents("Due");
+        ArrayList<Event> b2 = eventsDB.getAllEvents("Daily");
+        backgrounddates.addAll(b2);
+        for(int i =0; i<backgrounddates.size();i++){
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                Date d = sdf.parse(backgrounddates.get(i).getDate());
+                Log.d("date:", backgrounddates.get(i).getDate());
+                Drawable blue = getResources().getDrawable( R.color.calendar_background_due );
+                caldroidFragment.setBackgroundDrawableForDate(blue, d);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
 
 
 

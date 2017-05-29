@@ -46,9 +46,10 @@ public class CalendarSelectDateDialogue extends DialogFragment {
 
         noTaskTextview = (TextView)v.findViewById(R.id.notaskstextview);
 
-        TodoAdapter dialogueAdapter = new TodoAdapter(EventsByDate, MainActivity.getMainActivity().getApplicationContext());
+        CalendarDialogAdapter calendarDialogAdapter = new CalendarDialogAdapter(EventsByDate, MainActivity.getMainActivity().getApplicationContext());
+
         RecyclerView recyclerView = (RecyclerView)v.findViewById(R.id.calendar_dialog_recycler);
-        recyclerView.setAdapter(dialogueAdapter);
+        recyclerView.setAdapter(calendarDialogAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.getMainActivity().getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);

@@ -38,6 +38,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -131,11 +134,6 @@ public class MainActivity extends AppCompatActivity
             fm.beginTransaction().replace(R.id.content_main, mainFragment).commit();
 
         } else if (id == R.id.to_do) {
-            try {
-                todoFragment.checkDailyList();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
             fm.beginTransaction().replace(R.id.content_main, todoFragment).addToBackStack(null).commit();
 
         } else if (id == R.id.calendar) {
@@ -205,5 +203,8 @@ public class MainActivity extends AppCompatActivity
         );
         // add it to the RequestQueue
         requestQueue.add(getRequest);
+    }
+    public void checkDaily(){
+        
     }
 }

@@ -37,6 +37,8 @@ public class MainFragment extends Fragment {
     TextView weathertex;
     ImageView weathericon;
     TextView currentWeather;
+    LinearLayout linearLayout;
+    NoteEditText noteEditText;
 
     String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
     String[] days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
@@ -46,6 +48,14 @@ public class MainFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("notes", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("note", noteEditText.getText().toString());
+        editor.commit();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,11 +64,17 @@ public class MainFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_main, container, false);
         Weather weather = MainActivity.getMainActivity().getWeather();
 
+
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
         String location = sharedPreferences.getString("current", "bogota");
         currentWeather = (TextView)v.findViewById(R.id.home_current_weather_textview);
         weathericon = (ImageView)v.findViewById(R.id.weather_icon);
         weathertex = (TextView)v.findViewById(R.id.weather_temp_text);
+
+        // get what was typed in notes
+        SharedPreferences sharedPreferencesfornote = getContext().getSharedPreferences("notes", Context.MODE_PRIVATE);
+        String note = sharedPreferencesfornote.getString("note", " ");
+        Log.d("TESTTTTTT:", note);
 
 
         if(weather!=null) {
@@ -80,12 +96,13 @@ public class MainFragment extends Fragment {
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout)v.findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setTitle(days[day - 1] + ", " + months[month] + " " + dayofmonth + " " + year);
 
-        LinearLayout linearLayout = (LinearLayout)v.findViewById(R.id.noteview);
+        linearLayout = (LinearLayout)v.findViewById(R.id.noteview);
 
         XmlPullParser parser = getResources().getLayout(R.layout.fragment_main);
         AttributeSet attributes = Xml.asAttributeSet(parser);
 
-        NoteEditText noteEditText = new NoteEditText(getContext(), attributes);
+        noteEditText = new NoteEditText(getContext(), attributes);
+        noteEditText.setText(note);
         linearLayout.addView(noteEditText);
 
         return v;

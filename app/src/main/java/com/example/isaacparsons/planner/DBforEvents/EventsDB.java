@@ -28,6 +28,8 @@ public class EventsDB extends SQLiteOpenHelper {
     private static final String EVENT_DATE = "event_date";
     private static final String EVENT_DESCRIPTION = "event_description";
     private static final String EVENT_IMAGE = "event_image";
+    private static final String EVENT_TIME = "event_time";
+    private static final String EVENT_NOTIFICATION_DATE = "event_notification_date";
 
 
 
@@ -37,7 +39,7 @@ public class EventsDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "(" + KEY_ID + " INTEGER PRIMARY KEY," + EVENT_NAME + " TEXT," + EVENT_DATE + " TEXT," + EVENT_CATEGORY + " TEXT," + EVENT_DESCRIPTION + " TEXT,"+ EVENT_IMAGE + " TEXT)";
+        String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "(" + KEY_ID + " INTEGER PRIMARY KEY," + EVENT_NAME + " TEXT," + EVENT_DATE + " TEXT," + EVENT_CATEGORY + " TEXT," + EVENT_DESCRIPTION + " TEXT,"+ EVENT_IMAGE + " TEXT," + EVENT_TIME + " adTEXT," +EVENT_NOTIFICATION_DATE+ " TEXT)";
         sqLiteDatabase.execSQL(CREATE_TABLE);
 
     }
@@ -58,6 +60,8 @@ public class EventsDB extends SQLiteOpenHelper {
         values.put(EVENT_CATEGORY, event.getCategory());
         values.put(EVENT_DESCRIPTION, event.getDescription());
         values.put(EVENT_IMAGE, event.getImagetype());
+        values.put(EVENT_TIME, event.getTime());
+        values.put(EVENT_NOTIFICATION_DATE, event.getNotificationTime());
 
         sqLiteDatabase.insert(TABLE_NAME, null, values);
         sqLiteDatabase.close();
@@ -78,6 +82,8 @@ public class EventsDB extends SQLiteOpenHelper {
                 event.setCategory(cursor.getString(3));
                 event.setDescription(cursor.getString(4));
                 event.setImagetype(cursor.getString(5));
+                event.setTime(cursor.getString(6));
+                event.setNotificationTime(cursor.getString(7));
                 eventlist.add(event);
             } while (cursor.moveToNext());
         }
@@ -98,6 +104,8 @@ public class EventsDB extends SQLiteOpenHelper {
                 event.setCategory(cursor.getString(3));
                 event.setDescription(cursor.getString(4));
                 event.setImagetype(cursor.getString(5));
+                event.setTime(cursor.getString(6));
+                event.setNotificationTime(cursor.getString(7));
                 eventlist.add(event);
             } while (cursor.moveToNext());
         }
@@ -122,7 +130,10 @@ public class EventsDB extends SQLiteOpenHelper {
             event.setCategory(cursor.getString(3));
             event.setDescription(cursor.getString(4));
             event.setImagetype(cursor.getString(5));
+            event.setTime(cursor.getString(6));
+            event.setNotificationTime(cursor.getString(7));
         }
+        db.close();
         return event;
 
     }
@@ -141,9 +152,12 @@ public class EventsDB extends SQLiteOpenHelper {
                 event.setCategory(cursor.getString(3));
                 event.setDescription(cursor.getString(4));
                 event.setImagetype(cursor.getString(5));
+                event.setTime(cursor.getString(6));
+                event.setNotificationTime(cursor.getString(7));
                 eventlist.add(event);
             } while (cursor.moveToNext());
         }
+        sqLiteDatabase.close();
         return eventlist;
     }
 }

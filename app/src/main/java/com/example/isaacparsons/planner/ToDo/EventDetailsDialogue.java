@@ -22,6 +22,7 @@ public class EventDetailsDialogue extends android.support.v4.app.DialogFragment 
     TextView nameTextview;
     TextView descriptionTextView;
     TextView dateTextView;
+    TextView timeTextView;
 
 
     @Override
@@ -33,6 +34,7 @@ public class EventDetailsDialogue extends android.support.v4.app.DialogFragment 
         nameTextview = (TextView)v.findViewById(R.id.event_details_dialogue_event_name) ;
         descriptionTextView = (TextView)v.findViewById(R.id.details_dialogue_event_description);
         dateTextView = (TextView)v.findViewById(R.id.details_dialogue_event_date);
+        timeTextView = (TextView)v.findViewById(R.id.event_details_dialogue_event_time);
 
         String searchtitle = getArguments().getString("title");
         EventsDB eventsDB = new EventsDB(getContext());
@@ -40,8 +42,7 @@ public class EventDetailsDialogue extends android.support.v4.app.DialogFragment 
 
         nameTextview.setText(searchtitle);
         descriptionTextView.setText(event.getDescription());
-
-        Log.d("testtest", event.getDate());
+        timeTextView.setText(event.getTime());
         dateTextView.setText(event.getDate());
 
 
@@ -55,8 +56,7 @@ public class EventDetailsDialogue extends android.support.v4.app.DialogFragment 
                 })
                 .setNegativeButton("Delete Task", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Log.d("name text", nameTextview.getText().toString());
-                        Log.d("category: ", event.getCategory());
+
                         MainActivity.getMainActivity().removefromrecycler(nameTextview.getText().toString(), event.getCategory());
                     }
                 });

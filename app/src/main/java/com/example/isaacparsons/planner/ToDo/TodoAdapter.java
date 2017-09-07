@@ -81,11 +81,8 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Event event = dailylist.get(position);
-        Log.d("event.getImage: )", " " + event.getImagetype());
-        Log.d("event.getName: )", " " + event.getName());
 
         int resID = MainActivity.getMainActivity().getResources().getIdentifier(event.getImagetype() ,"drawable", MainActivity.getMainActivity().getPackageName());
-        Log.d("res; ", String.valueOf(resID));
         holder.title.setText(event.getName());
         holder.imageView.setImageResource(resID);
     }

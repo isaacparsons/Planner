@@ -45,6 +45,9 @@ public class CalendarFragment extends Fragment {
     RecyclerView calendarRecycler;
     CalendarAdapter calendarAdapter;
 
+    public CalendarAdapter getCalendarAdapter() {
+        return calendarAdapter;
+    }
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -148,7 +151,6 @@ public class CalendarFragment extends Fragment {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             try {
                 Date d = sdf.parse(backgrounddates.get(i).getDate());
-                Log.d("date:", backgrounddates.get(i).getDate());
                 Drawable blue = getResources().getDrawable( R.color.calendar_background_due );
                 caldroidFragment.setBackgroundDrawableForDate(blue, d);
             } catch (ParseException e) {
@@ -161,7 +163,4 @@ public class CalendarFragment extends Fragment {
         return v;
     }
 
-    public CalendarAdapter getCalendarAdapter() {
-        return calendarAdapter;
-    }
 }

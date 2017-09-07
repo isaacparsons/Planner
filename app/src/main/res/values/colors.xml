@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="edit_note_line">#000</color>
     <color name="calendar_background_due">#00b8e6</color>
+    <color name="calendar_task_due">#FF4C4C</color>
 </resources>

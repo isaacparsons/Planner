@@ -1,11 +1,19 @@
 package com.example.isaacparsons.planner;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.RingtoneManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -27,11 +35,15 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.isaacparsons.planner.Calendar.CalendarAdapter;
 import com.example.isaacparsons.planner.Calendar.CalendarFragment;
+import com.example.isaacparsons.planner.DBforEvents.EventsDB;
+import com.example.isaacparsons.planner.Scheduler.MyNotificationPublisher;
+import com.example.isaacparsons.planner.Scheduler.ScheduleNotification;
 import com.example.isaacparsons.planner.Settings.Settings;
 import com.example.isaacparsons.planner.ToDo.Event;
 import com.example.isaacparsons.planner.ToDo.EventDetailsDialogue;
 import com.example.isaacparsons.planner.ToDo.todofragment;
 import com.example.isaacparsons.planner.Weather.Weather;
+import com.roomorama.caldroid.CaldroidFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,17 +58,18 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     MainFragment mainFragment;
-    todofragment todoFragment = new todofragment();
+
+    public MainFragment getMainFragment() {
+        return mainFragment;
+    }
+
+    todofragment todoFragment;
     CalendarFragment calendarFragment = new CalendarFragment();
     FragmentManager manager = getSupportFragmentManager();
     public static MainActivity mainActivity;
     public String apikey = "fe11d748f2ed654122b375b04adeb617";
     public Weather weather;
 
-    TextView DateEdittext;
-    TextView weathertex;
-    ImageView weathericon;
-    TextView currentWeather;
 
     public static MainActivity getMainActivity(){
         return mainActivity;
@@ -69,12 +82,43 @@ public class MainActivity extends AppCompatActivity
         return weather;
     }
 
+    public void ScheduleNotification(Context context, Calendar date, int notificationId) {
+        Calendar now = Calendar.getInstance();
+
+        long futureInMillis = date.getTimeInMillis() - now.getTimeInMillis();
+        Log.d("time to notification:", " "+ futureInMillis);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                .setContentTitle("TEST")
+                .setContentText("rela")
+                .setSmallIcon(R.drawable.ic_menu_send)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setAutoCancel(true);
+
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent activity = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        builder.setContentIntent(activity);
+
+        Notification notification = builder.build();
+
+        Intent notificationIntent = new Intent(context, MyNotificationPublisher.class);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION_ID, notificationId);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis + SystemClock.elapsedRealtime(), pendingIntent);
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         MainActivity.setMainActivity(this);
         getWeatherJson();
+        todoFragment = new todofragment();
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -88,6 +132,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
     @Override
@@ -123,6 +169,10 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public todofragment getTodoFragment() {
+        return todoFragment;
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -141,15 +191,14 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    public void addtorecycler(String string,String date, String whichlist, String description, String imagetype){
+    public void addtorecycler(String whichlist, Event event){
 
-        Event event = new Event(string, date, whichlist, description, imagetype);
+        event.setCategory(whichlist);
         todoFragment.getAdapter(whichlist).AddData(event);
     }
 
@@ -207,4 +256,7 @@ public class MainActivity extends AppCompatActivity
     public void checkDaily(){
         
     }
+
+
 }
+

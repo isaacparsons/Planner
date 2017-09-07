@@ -11,6 +11,16 @@ public class Event {
     private String category;
     private String description;
     private String imagetype;
+    private String time;
+    private String notificationTime;
+
+    public String getNotificationTime() {
+        return notificationTime;
+    }
+
+    public void setNotificationTime(String notificationTime) {
+        this.notificationTime = notificationTime;
+    }
 
     public String getImagetype() {
         return imagetype;
@@ -30,13 +40,23 @@ public class Event {
         this.category = "Daily";
         this.description = " ";
         this.imagetype = "file";
+        this.time = "1200";
     }
-    public Event(String name, String date, String category, String description, String imagetype){
+    public Event(String name, String date, String time, String category, String description, String imagetype){
         this.date = date;
         this.name = name;
         this.category = category;
         this.description = description;
         this.imagetype = imagetype;
+        this.time = time;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getDescription() {

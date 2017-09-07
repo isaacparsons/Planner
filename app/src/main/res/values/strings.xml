@@ -13,5 +13,9 @@
         <item><FONT COLOR="#000"><b>Due</b></FONT></item>
         <item><FONT COLOR="#000"><b>Not Due</b></FONT></item>
     </string-array>
+    <string-array name="todopopupampm">
+        <item><FONT COLOR="#000"><b>AM</b></FONT></item>
+        <item><FONT COLOR="#000"><b>PM</b></FONT></item>
+    </string-array>
     <string name="current_location_shared_pref">current</string>
 </resources>

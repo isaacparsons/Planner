@@ -3,7 +3,10 @@ package com.example.isaacparsons.planner.ToDo;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import com.example.isaacparsons.planner.ToDo.NewTodoFragment;
+
 import android.support.v4.app.Fragment;
+import android.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -89,11 +92,11 @@ public class todofragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TodoAddPopup popup = new TodoAddPopup();
-
-                popup.show(getActivity().getFragmentManager(), "fabfrag");
+                NewTodoFragment newTodoFragment = new NewTodoFragment();
+                MainActivity.mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.content_main, newTodoFragment).commit();
             }
         });
+
 
 
         return v;
@@ -127,7 +130,7 @@ public class todofragment extends Fragment {
         if(timeNow!= daily){
             while (i<dailylist.size()){
                 Event event = dailylist.get(i);
-                MainActivity.getMainActivity().addtorecycler(event.getName(), event.getDate(), "Due", event.getDescription(), event.getImagetype());
+                MainActivity.getMainActivity().addtorecycler("Due", event);
                 i++;
             }
             i=0;

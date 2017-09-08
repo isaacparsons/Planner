@@ -45,12 +45,21 @@ public class CalendarFragment extends Fragment {
     RecyclerView calendarRecycler;
     CalendarAdapter calendarAdapter;
 
+    RecyclerView calendarRecyclerWeek;
+    CalendarAdapter2 calendarAdapter2;
+
     public CalendarAdapter getCalendarAdapter() {
         return calendarAdapter;
     }
 
     public CalendarFragment() {
         // Required empty public constructor
+    }
+    public String checkDate(String date){
+        if(date.length()==1){
+            date = "0"+date;
+        }
+        return date;
     }
 
 
@@ -65,15 +74,15 @@ public class CalendarFragment extends Fragment {
 
         //get current date for textview
         java.util.Calendar calendarCurrent = java.util.Calendar.getInstance();
-        final int month = calendarCurrent.get(java.util.Calendar.MONTH);
+        int month = calendarCurrent.get(java.util.Calendar.MONTH);
         int year = calendarCurrent.get(java.util.Calendar.YEAR);
         int day = calendarCurrent.get(java.util.Calendar.DAY_OF_WEEK);
         int dayofmonth = calendarCurrent.get(java.util.Calendar.DAY_OF_MONTH);
         currentdateTextview.setText(days[day - 1] + ", " + months[month] + " " + dayofmonth + " " + year);
 
-
         //get current days items from DB
         ArrayList<Event> arrayList;
+        ArrayList<Event> nextWeekArraylist;
         String currentdayofmonth;
         String currentmonth;
 
@@ -100,6 +109,23 @@ public class CalendarFragment extends Fragment {
         linearLayoutManagercalendar.setOrientation(LinearLayoutManager.VERTICAL);
         calendarRecycler.setLayoutManager(linearLayoutManagercalendar);
         //Drawable drawable = getContext().getResources().getDrawable(R.drawable.calendar_cardview_decordation);
+        String[] dates;
+        for (int i=0;i<7;i++){
+            if(dayofmonth+i>calendarCurrent.getActualMaximum(Calendar.DAY_OF_MONTH)){
+
+            }else{
+                String date = checkDate(String.valueOf(dayofmonth+i));
+            }
+
+            //dates[i] = String.valueOf(date) + "/" + String.
+
+        }
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        calendarRecyclerWeek = (RecyclerView)v.findViewById(R.id.calendar_recyler_next_week);
+        calendarRecyclerWeek.setLayoutManager(linearLayoutManager);
+        //calendarAdapter2 = new CalendarAdapter2();
+        calendarRecyclerWeek.setAdapter(calendarAdapter2);
 
 
         CaldroidFragment caldroidFragment = new CaldroidFragment();
@@ -150,17 +176,15 @@ public class CalendarFragment extends Fragment {
         for(int i =0; i<backgrounddates.size();i++){
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             try {
+                Log.d("date: ", " "+backgrounddates.get(i).getDate());
                 Date d = sdf.parse(backgrounddates.get(i).getDate());
                 Drawable blue = getResources().getDrawable( R.color.calendar_background_due );
-                caldroidFragment.setBackgroundDrawableForDate(blue, d);
+                Drawable red = getResources().getDrawable( R.color.calendar_task_due);
+                caldroidFragment.setBackgroundDrawableForDate(red, d);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-        }
-
-
-
-        return v;
+        } return v;
     }
 
 }

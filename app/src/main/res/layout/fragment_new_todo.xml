@@ -116,6 +116,18 @@
             android:layout_gravity="center_horizontal">
 
         </Spinner>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date Selected: "
+            android:textStyle="italic"
+            android:id="@+id/new_todo_fragment_date_static"
+            android:visibility="gone"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/new_todo_fragment_date"
+            android:textStyle="bold"/>
 
 
     </LinearLayout>

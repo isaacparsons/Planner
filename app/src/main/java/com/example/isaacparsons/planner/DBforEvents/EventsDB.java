@@ -87,6 +87,7 @@ public class EventsDB extends SQLiteOpenHelper {
                 eventlist.add(event);
             } while (cursor.moveToNext());
         }
+        sqLiteDatabase.close();
         return eventlist;
     }
 
@@ -109,6 +110,36 @@ public class EventsDB extends SQLiteOpenHelper {
                 eventlist.add(event);
             } while (cursor.moveToNext());
         }
+        sqLiteDatabase.close();
+        return eventlist;
+    }
+
+    public ArrayList<Event> getWeeksElements(String[] weekDates){
+        ArrayList<Event> eventlist = new ArrayList<Event>();
+        String selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE event_date = '"+weekDates[0]+"' OR "
+            + "event_date = '"+weekDates[1]+"' OR "
+                + "event_date = '"+weekDates[2]+"' OR "
+                + "event_date = '"+weekDates[3]+"' OR "
+                + "event_date = '"+weekDates[4]+"' OR "
+                + "event_date = '"+weekDates[5]+"' OR "
+                + "event_date = '"+weekDates[6]+"'";
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
+
+        if(cursor.moveToFirst()){
+            do {
+                Event event = new Event();
+                event.setName(cursor.getString(1));
+                event.setDate(cursor.getString(2));
+                event.setCategory(cursor.getString(3));
+                event.setDescription(cursor.getString(4));
+                event.setImagetype(cursor.getString(5));
+                event.setTime(cursor.getString(6));
+                event.setNotificationTime(cursor.getString(7));
+                eventlist.add(event);
+            } while (cursor.moveToNext());
+        }
+        sqLiteDatabase.close();
         return eventlist;
     }
 

@@ -4,6 +4,8 @@ package com.example.isaacparsons.planner.ToDo;
 import android.app.Activity;
 import android.content.Intent;
 import java.util.Calendar;
+import java.util.Date;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -34,8 +36,10 @@ public class NewTodoFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private static final int REQUEST_CODE = 1;
     private static final int REQUEST_CODE_TIME = 2;
+    private static final int REQUEST_CODE_DATE = 3;
     public static String NOTIFICATION_TIME;
     public static String NOTIFICATION_DATE;
+    public static String DATE;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -57,6 +61,8 @@ public class NewTodoFragment extends Fragment {
     Button cancelBtn;
     ImageButton notificationBtn;
     CheckBox notifcationCheckbox;
+    TextView textviewDate;
+    TextView staticTextviewDate;
 
 
     public NewTodoFragment() {
@@ -119,7 +125,7 @@ public class NewTodoFragment extends Fragment {
                     NOTIFICATION_TIME = resultTime;
                     notificationTime.setText(NOTIFICATION_DATE + " " + NOTIFICATION_TIME);
                     Calendar future = Calendar.getInstance();
-                    future.set(Calendar.MONTH, Integer.parseInt(NOTIFICATION_DATE.substring(5,7)));
+                    future.set(Calendar.MONTH, Integer.parseInt(NOTIFICATION_DATE.substring(5,7))+1);
                     future.set(Calendar.DAY_OF_MONTH, Integer.parseInt(NOTIFICATION_DATE.substring(8,10)));
                     future.set(Calendar.HOUR, Integer.parseInt(NOTIFICATION_TIME.substring(0,2)));
                     future.set(Calendar.MINUTE, Integer.parseInt(NOTIFICATION_TIME.substring(2,4)));
@@ -128,6 +134,14 @@ public class NewTodoFragment extends Fragment {
 
                 }
                 break;
+            case REQUEST_CODE_DATE:
+                if (resultCode == Activity.RESULT_OK) {
+                    Bundle bundle = data.getExtras();
+                    String resultDate = bundle.getString("selectedDate", "error");
+                    DATE = resultDate;
+                    textviewDate.setText(resultDate);
+                }
+                 break;
         }
     }
 
@@ -148,11 +162,14 @@ public class NewTodoFragment extends Fragment {
         descriptionEdittext = (EditText)v.findViewById(R.id.todopopupdescription);
         filecheckBox = (CheckBox)v.findViewById(R.id.filecheck);
         foldercheckBox = (CheckBox)v.findViewById(R.id.foldercheck);
+        textviewDate = (TextView)v.findViewById(R.id.new_todo_fragment_date);
+        staticTextviewDate = (TextView)v.findViewById(R.id.new_todo_fragment_date_static);
 
         timeTextview = (TextView)v.findViewById(R.id.timeTextview);
         getTimeTextviewseperator = (TextView)v.findViewById(R.id.seperatortextview);
         timehourEdittext = (EditText)v.findViewById(R.id.time_hour);
         timeminutesEdittext = (EditText)v.findViewById(R.id.time_minutes);
+
 
 
 
@@ -165,15 +182,35 @@ public class NewTodoFragment extends Fragment {
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
-
-        foldercheckBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(filecheckBox.isChecked()){
-                    filecheckBox.toggle();
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                if(selectedItem.equals("Due"))
+                {
+                    TodoDatePicker todoDatePicker = new TodoDatePicker();
+                    todoDatePicker.setTargetFragment(NewTodoFragment.this, REQUEST_CODE_DATE);
+                    todoDatePicker.show(MainActivity.mainActivity.getSupportFragmentManager(), "datePicker");
+                    staticTextviewDate.setVisibility(View.VISIBLE);
                 }
+            } // to close the onItemSelected
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+
             }
         });
+
+
+
+        foldercheckBox.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (filecheckBox.isChecked()) {
+                            filecheckBox.toggle();
+                        }
+                    }
+                });
         filecheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -211,16 +248,30 @@ public class NewTodoFragment extends Fragment {
                 }
                 String todayParsedDate = String.valueOf(currentdayofmonth) + "/" + String.valueOf(currentmonth) + "/" + String.valueOf(year);
 
-                if(text.equals("Daily")){
-                    date = todayParsedDate;
-                }else{
-                    date  = Dateedittext.getText().toString();
-                }
                 Event event = new Event(editText.getText().toString());
                 event.setNotificationTime(NOTIFICATION_TIME);
-                event.setDate(date);
                 event.setTime("0");
                 event.setDescription(descriptionEdittext.getText().toString());
+
+                String changedDate="";
+                if (DATE!=null) {
+                    changedDate = DATE.substring(8, 10) + "/" + DATE.substring(5, 7) + "/" + DATE.substring(0, 4);
+                }
+                Log.d("changed Date", changedDate);
+                if(spinner.getSelectedItem().toString().equals("Due")){
+                    event.setDate(changedDate);
+                    Log.d("spinner", " "+spinner.getSelectedItem());
+                    event.setCategory("Due");
+                }
+                if (spinner.getSelectedItem().toString().equals("Daily")){
+                    event.setDate(todayParsedDate);
+                    event.setCategory("Daily");
+                }
+                if(spinner.getAdapter().toString().equals("Not Due")){
+                    event.setDate("none");
+                    event.setCategory("Not Due");
+                }
+
 
                 if(filecheckBox.isChecked()){
 

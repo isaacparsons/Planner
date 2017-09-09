@@ -125,12 +125,14 @@ public class NewTodoFragment extends Fragment {
                     NOTIFICATION_TIME = resultTime;
                     notificationTime.setText(NOTIFICATION_DATE + " " + NOTIFICATION_TIME);
                     Calendar future = Calendar.getInstance();
-                    future.set(Calendar.MONTH, Integer.parseInt(NOTIFICATION_DATE.substring(5,7))+1);
+                    future.set(Calendar.MONTH, Integer.parseInt(NOTIFICATION_DATE.substring(5,7))-1);
                     future.set(Calendar.DAY_OF_MONTH, Integer.parseInt(NOTIFICATION_DATE.substring(8,10)));
                     future.set(Calendar.HOUR, Integer.parseInt(NOTIFICATION_TIME.substring(0,2)));
                     future.set(Calendar.MINUTE, Integer.parseInt(NOTIFICATION_TIME.substring(2,4)));
-                    Log.d("future time", " "+ future);
-                    MainActivity.mainActivity.ScheduleNotification(getContext(), future, 1);
+
+
+                    Log.d("future time", " "+ textviewDate.getText().toString());
+                    MainActivity.mainActivity.ScheduleNotification(getContext(), future, 1, editText.getText().toString(), DATE);
 
                 }
                 break;

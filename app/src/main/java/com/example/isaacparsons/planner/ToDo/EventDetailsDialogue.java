@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.isaacparsons.planner.DBforEvents.EventsDB;
 import com.example.isaacparsons.planner.MainActivity;
 import com.example.isaacparsons.planner.R;
+import com.google.gson.Gson;
 
 /**
  * Created by isaacparsons on 2017-05-22.
@@ -36,9 +37,10 @@ public class EventDetailsDialogue extends android.support.v4.app.DialogFragment 
         dateTextView = (TextView)v.findViewById(R.id.details_dialogue_event_date);
         timeTextView = (TextView)v.findViewById(R.id.event_details_dialogue_event_time);
 
-        String searchtitle = getArguments().getString("title");
-        EventsDB eventsDB = new EventsDB(getContext());
-        final Event event = eventsDB.getEvent(searchtitle);
+        String searchtitle = getArguments().getString("EventObjectJson");
+        final Event event = new Gson().fromJson(searchtitle, Event.class);
+        //EventsDB eventsDB = new EventsDB(getContext());
+        //final Event event = eventsDB.getEvent(searchtitle);
 
         nameTextview.setText(searchtitle);
         descriptionTextView.setText(event.getDescription());

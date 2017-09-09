@@ -19,6 +19,7 @@ import android.support.v4.app.DialogFragment;
 import com.example.isaacparsons.planner.DBforEvents.EventsDB;
 import com.example.isaacparsons.planner.MainActivity;
 import com.example.isaacparsons.planner.R;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> {
     ArrayList<Event> dailylist;
     Context context;
+    View v;
 
 
     public TodoAdapter(ArrayList<Event> dailylist, Context context) {
@@ -40,6 +42,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> 
         public TextView title;
         public CheckBox checkBox;
         public ImageView imageView;
+
 
         public MyViewHolder(View view) {
             super(view);
@@ -56,15 +59,15 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
-                    EventDetailsDialogue eventDetailsDialogue = new EventDetailsDialogue();
-                    String eventtitle = title.getText().toString();
+                    //FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
+                    //EventDetailsDialogue eventDetailsDialogue = new EventDetailsDialogue();
+                    //String eventtitle = title.getText().toString();
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString("title", eventtitle);
-                    eventDetailsDialogue.setArguments(bundle);
+                    //Bundle bundle = new Bundle();
+                    //bundle.putString("title", eventtitle);
+                    //eventDetailsDialogue.setArguments(bundle);
 
-                    eventDetailsDialogue.show(manager, " ");
+                    //eventDetailsDialogue.show(manager, " ");
                 }
             });
 
@@ -72,7 +75,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> 
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
+        v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cardview, parent, false);
 
         return new MyViewHolder(v);
@@ -80,11 +83,23 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Event event = dailylist.get(position);
+        final Event event = dailylist.get(position);
 
         int resID = MainActivity.getMainActivity().getResources().getIdentifier(event.getImagetype() ,"drawable", MainActivity.getMainActivity().getPackageName());
         holder.title.setText(event.getName());
         holder.imageView.setImageResource(resID);
+
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = MainActivity.mainActivity.getSupportFragmentManager();
+                EventDetailsDialogue eventDetailsDialogue = new EventDetailsDialogue();
+                Bundle bundle = new Bundle();
+                bundle.putString("EventObjectJson", new Gson().toJson(event));
+                eventDetailsDialogue.setArguments(bundle);
+                eventDetailsDialogue.show(fm, " ");
+            }
+        });
     }
 
     @Override

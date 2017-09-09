@@ -17,7 +17,7 @@ import java.util.Date;
 
 public class EventsDB extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "todoList";
     private static final String TABLE_NAME = "todoTable";
 
@@ -39,7 +39,7 @@ public class EventsDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "(" + KEY_ID + " INTEGER PRIMARY KEY," + EVENT_NAME + " TEXT," + EVENT_DATE + " TEXT," + EVENT_CATEGORY + " TEXT," + EVENT_DESCRIPTION + " TEXT,"+ EVENT_IMAGE + " TEXT," + EVENT_TIME + " adTEXT," +EVENT_NOTIFICATION_DATE+ " TEXT)";
+        String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "(" + KEY_ID + " INTEGER PRIMARY KEY," + EVENT_NAME + " TEXT," + EVENT_DATE + " TEXT," + EVENT_CATEGORY + " TEXT," + EVENT_DESCRIPTION + " TEXT,"+ EVENT_IMAGE + " TEXT," + EVENT_TIME + " TEXT," +EVENT_NOTIFICATION_DATE+ " TEXT)";
         sqLiteDatabase.execSQL(CREATE_TABLE);
 
     }
@@ -49,6 +49,12 @@ public class EventsDB extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ TABLE_NAME);
         onCreate(sqLiteDatabase);
 
+    }
+    public void resetTables(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        // Delete All Rows
+        db.execSQL("DROP TABLE IF EXISTS todoTable");
+        db.close();
     }
     public void addEvent(Event event){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();

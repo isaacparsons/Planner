@@ -82,15 +82,15 @@ public class MainActivity extends AppCompatActivity
         return weather;
     }
 
-    public void ScheduleNotification(Context context, Calendar date, int notificationId) {
+    public void ScheduleNotification(Context context, Calendar date, int notificationId ,String title, String dueDate) {
         Calendar now = Calendar.getInstance();
 
-        long futureInMillis = date.getTimeInMillis() - now.getTimeInMillis();
+        long futureInMillis = date.getTimeInMillis() - System.currentTimeMillis();
         Log.d("time to notification:", " "+ futureInMillis);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                .setContentTitle("TEST")
-                .setContentText("rela")
+                .setContentTitle("Task: "+title)
+                .setContentText("Due: "+dueDate)
                 .setSmallIcon(R.drawable.ic_menu_send)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setAutoCancel(true);

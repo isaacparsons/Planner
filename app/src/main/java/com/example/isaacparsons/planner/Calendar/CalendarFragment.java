@@ -72,6 +72,7 @@ public class CalendarFragment extends Fragment {
 
         long calendar = Calendar.getInstance().getTimeInMillis();
 
+
         //get current date for textview
         java.util.Calendar calendarCurrent = java.util.Calendar.getInstance();
         int month = calendarCurrent.get(java.util.Calendar.MONTH);
@@ -109,22 +110,27 @@ public class CalendarFragment extends Fragment {
         linearLayoutManagercalendar.setOrientation(LinearLayoutManager.VERTICAL);
         calendarRecycler.setLayoutManager(linearLayoutManagercalendar);
         //Drawable drawable = getContext().getResources().getDrawable(R.drawable.calendar_cardview_decordation);
-        String[] dates;
+        String[] dates = new String[7];
+        int newMonth = 1;
         for (int i=0;i<7;i++){
             if(dayofmonth+i>calendarCurrent.getActualMaximum(Calendar.DAY_OF_MONTH)){
-
+                String date = checkDate(String.valueOf(newMonth));
+                String monthUpdate = checkDate(String.valueOf(month+2));
+                newMonth++;
+                dates[i] = String.valueOf(date) + "/" + monthUpdate + "/" + String.valueOf(year);
+                Log.d("datesif:", dates[i]);
             }else{
-                String date = checkDate(String.valueOf(dayofmonth+i));
+                String monthUpdate = checkDate(String.valueOf(month+1));
+                String date = checkDate(String.valueOf(dayofmonth+i+1));
+                dates[i] = String.valueOf(date) + "/" + monthUpdate + "/" + String.valueOf(year);
+                Log.d("dateselse:", dates[i]);
             }
-
-            //dates[i] = String.valueOf(date) + "/" + String.
-
         }
-
+        nextWeekArraylist = eventsDB.getWeeksElements(dates);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         calendarRecyclerWeek = (RecyclerView)v.findViewById(R.id.calendar_recyler_next_week);
         calendarRecyclerWeek.setLayoutManager(linearLayoutManager);
-        //calendarAdapter2 = new CalendarAdapter2();
+        calendarAdapter2 = new CalendarAdapter2(nextWeekArraylist, getContext());
         calendarRecyclerWeek.setAdapter(calendarAdapter2);
 
 
@@ -176,7 +182,6 @@ public class CalendarFragment extends Fragment {
         for(int i =0; i<backgrounddates.size();i++){
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             try {
-                Log.d("date: ", " "+backgrounddates.get(i).getDate());
                 Date d = sdf.parse(backgrounddates.get(i).getDate());
                 Drawable blue = getResources().getDrawable( R.color.calendar_background_due );
                 Drawable red = getResources().getDrawable( R.color.calendar_task_due);

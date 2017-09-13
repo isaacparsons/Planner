@@ -39,10 +39,8 @@ public class EventDetailsDialogue extends android.support.v4.app.DialogFragment 
 
         String searchtitle = getArguments().getString("EventObjectJson");
         final Event event = new Gson().fromJson(searchtitle, Event.class);
-        //EventsDB eventsDB = new EventsDB(getContext());
-        //final Event event = eventsDB.getEvent(searchtitle);
 
-        nameTextview.setText(searchtitle);
+        nameTextview.setText(event.getName());
         descriptionTextView.setText(event.getDescription());
         timeTextView.setText(event.getTime());
         dateTextView.setText(event.getDate());

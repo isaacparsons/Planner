@@ -74,12 +74,11 @@ public class MainFragment extends Fragment {
         // get what was typed in notes
         SharedPreferences sharedPreferencesfornote = getContext().getSharedPreferences("notes", Context.MODE_PRIVATE);
         String note = sharedPreferencesfornote.getString("note", " ");
-        Log.d("TESTTTTTT:", note);
 
 
         if(weather!=null) {
             weathertex.setText(weather.getCurrentTemp() + (char) 0x00B0 + "C");
-            currentWeather.setText("Current Weather For " + location + ": ");
+            currentWeather.setText("Current Weather for " + location + ": ");
             if ((weather.getCurrentWeather()).equals("Clear") || (weather.getCurrentWeather()).equals("Clouds")) {
                 int resID = MainActivity.getMainActivity().getResources().getIdentifier((weather.getCurrentWeather()).toLowerCase(), "drawable", MainActivity.getMainActivity().getPackageName());
                 weathericon.setImageResource(resID);
@@ -102,7 +101,7 @@ public class MainFragment extends Fragment {
         AttributeSet attributes = Xml.asAttributeSet(parser);
 
         noteEditText = new NoteEditText(getContext(), attributes);
-        noteEditText.setText(note);
+        noteEditText.setText("Write Down Notes Here");
         linearLayout.addView(noteEditText);
 
         return v;

@@ -50,27 +50,12 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.MyViewHolder> 
             checkBox= (CheckBox)view.findViewById(R.id.completedcheckbox);
             imageView = (ImageView)view.findViewById(R.id.card_image);
 
-                    checkBox.setOnClickListener(new View.OnClickListener() {
+            checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
                 }
             });
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
-                    //EventDetailsDialogue eventDetailsDialogue = new EventDetailsDialogue();
-                    //String eventtitle = title.getText().toString();
-
-                    //Bundle bundle = new Bundle();
-                    //bundle.putString("title", eventtitle);
-                    //eventDetailsDialogue.setArguments(bundle);
-
-                    //eventDetailsDialogue.show(manager, " ");
-                }
-            });
-
         }
     }
     @Override
